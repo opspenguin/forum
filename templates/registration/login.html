@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<ol class="breadcrumb">
+  <li><a href="/">首页</a></li>
+  <li class="active">登陆</li>
+</ol>
+
+{% if form.non_field_errors %}
+  {% for error in form.non_field_errors %}
+<div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endfor %}
+{% endif %}
+{% if form.username.errors %}
+  {% for error in form.username.errors %}
+<div class="alert alert-danger" role="alert">用户名:{{ error }}</div>
+  {% endfor %}
+{% endif %}
+{% if form.password.errors %}
+  {% for error in form.password.errors %}
+<div class="alert alert-danger" role="alert">密码:{{ error }}</div>
+  {% endfor %}
+{% endif %}
+
+<form class="form-horizontal" action="/accounts/login/" method="POST">{% csrf_token %}
+  <div class="form-group">
+    <label class="col-sm-3 control-label">用户名</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" name="username">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">密码</label>
+    <div class="col-sm-3">
+      <input type="password" class="form-control" name="password">
+    </div>
+  </div>
+      <input type="hidden" name="next" value="{{ next }}">
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-3">
+      <button type="submit" class="btn btn-default">登陆</button>
+      <span class="pull-right"><a href="#">忘记密码？重置密码</a><span>
+    </div>
+  </div>
+</form>
+{% endblock %}

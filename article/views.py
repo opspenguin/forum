@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 from article.models import Article
 from block.models import Block
@@ -17,6 +18,7 @@ def article_list(request,block_id):
     articles_objs=page.object_list
     return render(request,"article_list.html",{"articles":articles_objs,"b":block})
 
+@login_required
 def article_create(request,block_id):
     block_id=int(block_id)
     block=Block.objects.get(id=block_id)
@@ -26,6 +28,7 @@ def article_create(request,block_id):
         form=ArticleForm(request.POST)
         if form.is_valid():
             article=form.save(commit=False)
+            article.owner=request.user
             article.block=block
             article.status=0
             article.save()
