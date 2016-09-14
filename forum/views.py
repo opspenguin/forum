@@ -29,6 +29,8 @@ def register(request):
             error="两次密码不一致"
         if User.objects.filter(username=username).count()>0:
             error="用户已存在"
+        if User.objects.filter(email=email).count()>0:
+            error="邮箱已存在"
         if not error:
             user=User.objects.create_user(username=username,email=email,password=password,is_active=False)
             user.save()
